@@ -1,0 +1,76 @@
+# PingPongGame
+
+import java.util.Random;
+
+
+public class Ball extends GameObject {
+
+    private Handler handler;
+    private Random r=new Random();
+
+    public Ball(float x, float y, ID id, Handler handler) {
+        super(x, y, id);
+        this.handler=handler;
+
+
+        velX=3;
+        velY=0;
+    }
+
+
+    @Override
+    public void tick() {
+
+        x+=velX;
+        y+=velY;
+
+        if(y<10) velY*=-1;
+        if(y>455) velY*=-1;
+
+        collision();
+
+    }
+
+    public void collision(){
+        for(int i=0; i<handler.object.size(); i++){
+            GameObject tempObject= handler.object.get(i);
+
+            if(tempObject.getId()==ID.Player1 || tempObject.getId()==ID.Player2){
+                if(getBounds().intersects(tempObject.getBounds())){
+                    velX=(r.nextInt(5- -5)+ -5);
+                    velY=(r.nextInt(5 - -5)+ -5);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void render(Graphics g) {
+
+        if(x<-10 || x>710){
+            handler.clearPlayers();
+            g.setColor(Color.white);
+            Font font= new Font("Arial",4, 20);
+            g.setFont(font);
+            g.drawString("GameOver!", 295,220);}
+            if(x<-10){
+            g.setColor(Color.green);
+            g.drawString("GREEN WON",285, 250);
+            }
+            else if(x>710){
+                g.setColor(Color.blue);
+                g.drawString("BLUE WON",295,250);
+            }
+       else {
+            g.setColor(Color.white);
+            g.fillOval((int) x, (int) y , 20, 20);
+        }
+    }
+
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle((int)x, (int)y, 20,20);
+    }
+
+}

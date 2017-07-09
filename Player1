@@ -1,0 +1,36 @@
+# PingPongGame
+
+import java.awt.*;
+
+
+public class Player1 extends GameObject {
+
+    private Handler handler;
+
+    public Player1(float x, float y, ID id, Handler handler) {
+        super(x, y, id);
+        this.handler=handler;
+
+    }
+
+    @Override
+    public void tick() {
+
+        x+=velX;
+        y+=velY;
+
+        y=Game.clamp((int)y, 0,385);
+    }
+
+    @Override
+    public void render(Graphics g) {
+
+        g.setColor(Color.blue);
+        g.fillRect((int)x, (int)y, 20,80);
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle((int)x,(int)y, 20, 80);
+    }
+}
